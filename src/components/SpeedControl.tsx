@@ -57,7 +57,7 @@ export function SpeedControl({ speed, onSpeedChange }: SpeedControlProps) {
             onChange={handleInputChange}
             onBlur={handleInputBlur}
             onKeyDown={handleInputKeyDown}
-            className="w-16 rounded border border-border bg-bg-primary px-2 py-1 text-right font-mono text-sm text-text-primary outline-none focus:border-border-focus"
+            className="w-16 rounded border border-border bg-bg-primary px-2 py-1 text-right font-mono text-base md:text-sm text-text-primary outline-none focus:border-border-focus"
           />
           <span className="text-xs text-text-dim">tok/s</span>
         </div>
