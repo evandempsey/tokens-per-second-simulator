@@ -82,7 +82,7 @@ export default function App() {
   }, [playbackState.status, play, pause, reset]);
 
   return (
-    <div className="flex h-full flex-col md:flex-row bg-bg-primary">
+    <div className="flex h-full flex-col md:flex-row bg-bg-primary overflow-x-hidden">
       {/* Mobile top bar */}
       <div className="flex items-center justify-between border-b border-border bg-bg-secondary px-4 py-2.5 md:hidden">
         <button
