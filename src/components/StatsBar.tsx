@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import type { PlaybackState } from "../types";
 
 interface StatsBarProps {
@@ -5,11 +6,34 @@ interface StatsBarProps {
   totalTokenCount: number;
 }
 
+const UPDATE_INTERVAL = 250; // ms between display updates
+const EMA_ALPHA = 0.15; // smoothing factor (lower = smoother)
+
 export function StatsBar({ state, totalTokenCount }: StatsBarProps) {
-  const effectiveTps =
+  const smoothedRef = useRef({ value: 0, display: "0.0", lastUpdate: 0 });
+
+  const rawTps =
     state.streamingElapsedMs > 0
-      ? (state.totalTokensEmitted / (state.streamingElapsedMs / 1000)).toFixed(1)
-      : "0.0";
+      ? state.totalTokensEmitted / (state.streamingElapsedMs / 1000)
+      : 0;
+
+  const now = performance.now();
+  const ref = smoothedRef.current;
+
+  if (state.status === "idle" || state.totalTokensEmitted === 0) {
+    ref.value = 0;
+    ref.display = "0.0";
+    ref.lastUpdate = 0;
+  } else if (now - ref.lastUpdate >= UPDATE_INTERVAL) {
+    // Apply EMA
+    if (ref.lastUpdate === 0) {
+      ref.value = rawTps; // initialize on first update
+    } else {
+      ref.value = EMA_ALPHA * rawTps + (1 - EMA_ALPHA) * ref.value;
+    }
+    ref.display = ref.value.toFixed(1);
+    ref.lastUpdate = now;
+  }
 
   const elapsed = (state.elapsedMs / 1000).toFixed(1);
 
@@ -17,7 +41,7 @@ export function StatsBar({ state, totalTokenCount }: StatsBarProps) {
     <div className="flex border-t border-border bg-bg-secondary">
       <StatCell label="Target" value={`${state.tokensPerSecond}`} unit="tok/s" />
       <div className="w-px bg-border" />
-      <StatCell label="Effective" value={effectiveTps} unit="tok/s" />
+      <StatCell label="Effective" value={ref.display} unit="tok/s" />
       <div className="w-px bg-border" />
       <StatCell
         label="Tokens"
