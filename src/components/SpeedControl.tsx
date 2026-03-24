@@ -78,7 +78,7 @@ export function SpeedControl({ speed, onSpeedChange }: SpeedControlProps) {
             key={preset.value}
             onClick={() => onSpeedChange(preset.value)}
             className={cn(
-              "rounded border px-2 py-1 text-xs transition-all duration-150",
+              "rounded border px-3 py-2 text-xs transition-all duration-150 min-h-[44px] md:min-h-0 md:px-2 md:py-1",
               speed === preset.value
                 ? "border-text-primary bg-text-primary text-bg-primary font-medium"
                 : "border-border text-text-secondary hover:border-border-focus hover:text-text-primary",

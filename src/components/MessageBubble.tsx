@@ -12,14 +12,14 @@ export function MessageBubble({ message }: MessageBubbleProps) {
 
   return (
     <div className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}>
-      <div className={cn("space-y-1", isUser ? "max-w-[70%]" : "max-w-[85%]")}>
+      <div className={cn("space-y-1", isUser ? "max-w-[85%] md:max-w-[70%]" : "max-w-full md:max-w-[85%]")}>
         <span className="block text-[10px] font-medium uppercase tracking-wider text-text-dim">
           {isUser ? "User" : "Assistant"}
         </span>
 
         <div
           className={cn(
-            "rounded-lg border p-4",
+            "rounded-lg border p-3 md:p-4",
             isUser
               ? "rounded-br-sm border-border bg-bg-tertiary"
               : "rounded-bl-sm border-border bg-bg-secondary",

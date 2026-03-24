@@ -20,7 +20,7 @@ export function ChatArea({ messages, status }: ChatAreaProps) {
     <div className="flex-1 overflow-hidden">
       <div
         ref={scrollRef}
-        className="custom-scrollbar h-full overflow-y-auto p-6 space-y-4"
+        className="custom-scrollbar h-full overflow-y-auto p-4 md:p-6 space-y-4"
       >
         {messages.length === 0 && status === "idle" && (
           <div className="flex h-full items-center justify-center">

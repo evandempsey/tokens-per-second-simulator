@@ -6,8 +6,8 @@ interface StatsBarProps {
   totalTokenCount: number;
 }
 
-const UPDATE_INTERVAL = 250; // ms between display updates
-const EMA_ALPHA = 0.15; // smoothing factor (lower = smoother)
+const UPDATE_INTERVAL = 250;
+const EMA_ALPHA = 0.15;
 
 export function StatsBar({ state, totalTokenCount }: StatsBarProps) {
   const smoothedRef = useRef({ value: 0, display: "0.0", lastUpdate: 0 });
@@ -25,9 +25,8 @@ export function StatsBar({ state, totalTokenCount }: StatsBarProps) {
     ref.display = "0.0";
     ref.lastUpdate = 0;
   } else if (now - ref.lastUpdate >= UPDATE_INTERVAL) {
-    // Apply EMA
     if (ref.lastUpdate === 0) {
-      ref.value = rawTps; // initialize on first update
+      ref.value = rawTps;
     } else {
       ref.value = EMA_ALPHA * rawTps + (1 - EMA_ALPHA) * ref.value;
     }
@@ -38,17 +37,17 @@ export function StatsBar({ state, totalTokenCount }: StatsBarProps) {
   const elapsed = (state.elapsedMs / 1000).toFixed(1);
 
   return (
-    <div className="flex border-t border-border bg-bg-secondary">
+    <div className="grid grid-cols-2 md:flex border-t border-border bg-bg-secondary">
       <StatCell label="Target" value={`${state.tokensPerSecond}`} unit="tok/s" />
-      <div className="w-px bg-border" />
+      <div className="hidden md:block w-px bg-border" />
       <StatCell label="Effective" value={ref.display} unit="tok/s" />
-      <div className="w-px bg-border" />
+      <div className="hidden md:block w-px bg-border" />
       <StatCell
         label="Tokens"
         value={`${state.totalTokensEmitted}`}
         unit={`/ ${totalTokenCount}`}
       />
-      <div className="w-px bg-border" />
+      <div className="hidden md:block w-px bg-border" />
       <StatCell label="Elapsed" value={elapsed} unit="s" />
     </div>
   );
@@ -64,7 +63,7 @@ function StatCell({
   unit: string;
 }) {
   return (
-    <div className="flex-1 px-4 py-2 text-center">
+    <div className="flex-1 px-3 py-2 text-center border-b border-r border-border md:border-0 last:border-r-0 [&:nth-child(n+5)]:border-b-0">
       <div className="text-[10px] font-medium uppercase tracking-wider text-text-dim">
         {label}
       </div>
